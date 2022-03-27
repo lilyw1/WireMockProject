@@ -65,14 +65,16 @@ public class TestWeworkAPI {
             }
             depart.put(s,o);
         });
-        //body体内容
-//        String depart = "{\n" +
-//                "   \"name\": \"运营部\",\n" +
-//                "   \"name_en\": \"YYBZ\",\n" +
-//                "   \"parentid\": 1,\n" +
-//                "   \"order\": 3986,\n" +
-//                "   \"id\": 9991\n" +
-//                "}";
+        /*
+        body体内容
+        String depart = "{\n" +
+                "   \"name\": \"运营部\",\n" +
+                "   \"name_en\": \"YYBZ\",\n" +
+                "   \"parentid\": 1,\n" +
+                "   \"order\": 3986,\n" +
+                "   \"id\": 9991\n" +
+                "}";
+         */
         Integer id = given().log().all()
                 .contentType("application/json;charset = utf-8")
                 .queryParam("access_token", access_token)
