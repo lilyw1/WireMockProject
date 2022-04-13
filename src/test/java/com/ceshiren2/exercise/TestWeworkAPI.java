@@ -2,6 +2,7 @@ package com.ceshiren2.exercise;
 
 import com.ceshiren.util.FakerUtil;
 import com.ceshiren.util.MapperUtil;
+import io.restassured.response.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -12,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author wyl
@@ -75,16 +78,23 @@ public class TestWeworkAPI {
                 "   \"id\": 9991\n" +
                 "}";
          */
-        Integer id = given().log().all()
+        Response response = given().log().all()
                 .contentType("application/json;charset = utf-8")
-                .queryParam("access_token", access_token)
+                .queryParam("access_token", TestWeworkAPI.access_token)
                 .body(depart)
                 .when()
                 .post("https://qyapi.weixin.qq.com/cgi-bin/department/create")
                 .then().log().all().statusCode(200)
-                .extract().response().path("id");
-
+                .extract().response();
+        Integer id = response.path("id");
         list.add(id);
+
+        Integer errcode = response.path("errcode");
+        String errmsg = response.path("errmsg");
+        assertAll(
+                ()-> assertEquals(0,errcode, "错误码不匹配"),
+                ()-> assertEquals("created",errmsg,"添加信息不匹配")
+        );
 
     }
     //id：部门id，32位整型，指定时必须大于1。若不填该参数，将自动生成id
